@@ -781,6 +781,84 @@ using complex background styles or named grid-areas.
 }
 ```
 
+### Shorthand Properties
+
+Using shorthand properties improves code readability, so we prefer them when appropriate. However, there are cases where using shorthand can lead to unexpected issues, so it's important to apply them wisely.
+
+**If you need to set only a single value from a shorthand property and there's a dedicated longhand property available, use the longhand property instead.** This helps prevent unintended overrides and potential bugs.
+
+```css
+/* Avoid */
+.infoland-component {
+  padding: 0 0 0 20px;
+}
+
+/* Preferred */
+.infoland-component {
+  padding-left: 20px;
+}
+```
+
+**When setting values with a shorthand property and later overriding a single value, prefer using only the shorthand property to ensure clarity and consistency.** Mixing shorthand and longhand properties can lead to confusion and unexpected results.
+
+```css
+/* Avoid */
+.infoland-component {
+  padding: 20px;
+  padding-top: 25px;
+}
+
+/* Preferred */
+.infoland-component {
+  /* top | left and right | bottom */
+  padding: 25px 20px 20px;
+}
+```
+
+### Vendor Prefixes
+
+In general, **avoid manually adding vendor prefixes in CSS**. Modern browsers provide excellent support for most CSS properties, making vendor prefixes unnecessary in most cases.
+
+However, if a project requires supporting older browser versions, consider using [Autoprefixer](https://github.com/postcss/autoprefixer) or a similar tool to automatically handle vendor prefixes rather than adding them manually.
+
+#### Exceptions: When to Use Vendor Prefixes
+
+While vendor prefixes are mostly redundant in 2025, there are a few cases where they might still be necessary:
+
+1. CSS Features with Partial Support Some experimental or newer CSS properties may still require prefixes in specific browsers. Examples include:
+
+```css
+/* Safari may still require a prefix for backdrop filters */
+.blurred-background {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+```
+
+2. Performance-Related Optimizations Some hardware-accelerated properties, like `will-change`, may benefit from vendor prefixes in certain cases:
+
+```css
+/* Older Safari versions may need the prefix */
+.animated-element {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+```
+
+3. Custom Scrollbars in WebKit Browsers WebKit-based browsers (Chrome, Safari, Edge) still rely on prefixed properties for styling scrollbars:
+
+```css
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+```
+
+4. Edge Cases for Legacy Browsers If a project explicitly supports outdated browsers that lack proper CSS standard adoption, vendor prefixes might still be required. In such cases, it’s best to rely on Autoprefixer rather than manually maintaining prefixes.
+
 ### Z-index
 
 The use of z-index can cause unwanted side effects that can be tricky to debug and manage. To avoid
